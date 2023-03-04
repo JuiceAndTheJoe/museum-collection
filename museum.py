@@ -90,9 +90,9 @@ def execute(choice: int) -> None:
         name = input("Vilket föremål vill du hantera?: ")
         try:
             if not item_dict[name].lånat:
-                dest = input("\nFöremålet är här i museet! Var ska den lånas? (Tryck \'Enter\' om inte det ska lånas) : ")
+                dest = input(f"\n{item_dict[name]} är här i museet! Var ska den lånas? (Tryck \'Enter\' om inte det ska lånas) : ")
                 item_dict[name].lånat = dest
-                print(f"\nFöremålet är nu på väg till {dest}.")
+                print(f"\n{item_dict[name]} är nu på väg till {dest}.")
             else:
                 print(f"\nFöremålet har varit lånat till {item_dict[name].lånat}! Nu är det tillbaka i vår samling :)")
                 item_dict[name].lånat = ""

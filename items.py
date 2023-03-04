@@ -57,7 +57,7 @@ class Item:
         if not self.lånat:
             loan = ""
         else:
-            loan = f"För närvarande i {self.lånat}."
+            loan = f"**För närvarande i {self.lånat}.**"
 
         return f"{self.namn}, \"{self.beskr}\", tillhör {kont}Id-nummer: {self.idnr} - [{self.antal} sökningar] {loan}\n"
     
