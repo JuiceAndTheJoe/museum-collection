@@ -97,10 +97,10 @@ def menu_choice() -> int:
 
 # Objektfunktioner (hanterar sökning, ändring av egenskaper, etc)
 
-def fritext(type: str, s: str, d: dict) -> None:
+def fritext(type: str, s: str, d: dict) -> list:
     """
     Used to search for partial descriptions/contexts of objects, 
-    prints the objects that match the query.
+    returns a list of objects that match the query.
 
     Parameters
     ----------
@@ -121,13 +121,7 @@ def fritext(type: str, s: str, d: dict) -> None:
             if s in a[1]:                           # om någon del av beskrivningen matchar query
                 matches.append(a[0])                # lägg till namnet i listan
         
-        if not matches:
-            print(f"\nInga objekt matchar beskrivningen \"{s}\", testa att omformulera dig!")
-        else:
-            print(f"\nFöljande {len(matches)} objekt matchar beskrivningen \"{s}\":")
-        for a in matches:
-            d[a].antal += 1
-            print(d[a])
+        return matches
     
     elif type == "k": # sök kontext
         all_kont = {}
@@ -140,16 +134,15 @@ def fritext(type: str, s: str, d: dict) -> None:
             for k in value[1]:                      # om någon av kontexten matchar query, lägg till objektnamnet i listan
                 if s in k:
                     matches.append(value[0])
-        
-        if not matches:
-            print(f"\nInga objekt matchar kontexten \"{s}\", testa att omformulera dig!")
-        else:
-            print(f"\nFöljande objekt matchar kontexten \"{s}\": [{len(matches)} st]")
-        for a in matches:
-            d[a].antal += 1
-            print(d[a])
+
+        return matches
+
     else:
         pass                                        # error hanteras utanför funktionen
+
+def save_dict(dict: dict) -> None:
+    if (itms := dict):
+        write_Item(itms, "dump")
 
 """
 TODO: För över färdiga delar av koden i menyn, de som skapar, söker och tar bort föremål. 
@@ -157,4 +150,3 @@ Det gör det
 1. enklare att läsa 
 2. enklare att anropa när GUI:n körs
 """
-

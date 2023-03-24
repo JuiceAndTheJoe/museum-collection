@@ -99,8 +99,7 @@ def execute(choice: int) -> None:
         except KeyError:
             print(f"Inget föremål med namn {name} hittades i samlingen.")
     elif choice == 7:
-        if (itm := item_dict):
-            write_Item(itm, "dump")
+        save_dict(item_dict)
     else:
         print("Svara med ett heltal i intervallet 1-5.")
 
