@@ -206,12 +206,16 @@ class Application(Frame):
             self.output_txt.delete(0.0, END)
             self.output_txt.insert(0.0, result)
 
-
  # ---------- SETTING UP THE MAIN WINDOW ---------
-
 
 root = Tk()
 root.title("Museets hjälpreda!")
 root.geometry("900x600")
 my_app = Application(root)
 root.mainloop()
+
+"""
+TODO:   KOMMENTERA SKITEN UR DENNA FIL
+        Fixa "Hantera lån" & "Visa samlingen"
+        Lägg till bildfält
+"""
