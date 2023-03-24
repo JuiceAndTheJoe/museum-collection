@@ -78,7 +78,7 @@ class Item:
         self.beskr = new_beskr
         return f"Uppdaterad beskrivning: {self.beskr}\n"
 
-    def byt_kontext(self, new_kontext: str) -> str:
+    def byt_kontext(self, new_kontext: list) -> str:
         """
         Byter föremålets historiska sammanhang.
 
@@ -92,5 +92,5 @@ class Item:
         str
             Bekräftelse på uppdateringen.
         """
-        self.kontext = new_kontext
+        self.kontext = new_kontext.split(", ")
         return f"Uppdaterad historiskt sammanhang: {self.kontext}\n"
