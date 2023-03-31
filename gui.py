@@ -214,7 +214,7 @@ class Application(Frame):
         self.output_txt.delete(0.0, END)
         self.output_txt.insert(0.0, result)
 
-    def bttn_show(self):
+    def bttn_show(self): #TODO: fixa! if & else ger samma resultat, och skriver ut allt upp och ner??
         nr = 1
         self.output_txt.delete(0.0, END)
         if self.inkludera:
@@ -223,6 +223,7 @@ class Application(Frame):
                 item.antal += 1
                 self.output_txt.insert(0.0, f"{nr}. {str(item)}")
                 nr += 1
+
         else:
             self.output_txt.insert(0.0, "\nJust nu visas följande element:\n")
             for item in museum.item_dict.values():
@@ -230,7 +231,8 @@ class Application(Frame):
                     item.antal += 1
                     self.output_txt.insert(0.0, f"{nr}. {str(item)}")
                     nr += 1
-                    
+
+
  # ---------- SETTING UP THE MAIN WINDOW ---------
 
 root = Tk()
