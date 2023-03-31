@@ -149,12 +149,21 @@ def hantera(name: str, item_dict: dict):
         if not item_dict[name].lånat:
             dest = input(f"\n{item_dict[name]} är här i museet! Var ska den lånas? (Tryck \'Enter\' om inte det ska lånas) : ")
             item_dict[name].lånat = dest
+<<<<<<< HEAD
             print(f"\n{item_dict[name]} är nu på väg till {dest}.")
         else:
             print(f"\nFöremålet har varit lånat till {item_dict[name].lånat}! Nu är det tillbaka i vår samling :)")
             item_dict[name].lånat = ""
     except KeyError:
         print(f"Inget föremål med namn {name} hittades i samlingen.")
+=======
+            return f"\n{item_dict[name]} är nu på väg till {dest}."
+        else:
+            item_dict[name].lånat = ""
+            return f"\nFöremålet har varit lånat till {item_dict[name].lånat}! Nu är det tillbaka i vår samling :)"
+    except KeyError:
+        return f"Inget föremål med namn {name} hittades i samlingen."
+>>>>>>> fed60dd5d5761083e31068328ec85a0ceb7e3bda
 
 """
 TODO: För över färdiga delar av koden i menyn, de som skapar, söker och tar bort föremål. 
