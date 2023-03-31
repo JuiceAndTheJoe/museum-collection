@@ -144,6 +144,18 @@ def save_dict(dict: dict) -> None:
     if (itms := dict):
         write_Item(itms, "dump")
 
+def hantera(name: str, item_dict: dict):
+    try:
+        if not item_dict[name].lånat:
+            dest = input(f"\n{item_dict[name]} är här i museet! Var ska den lånas? (Tryck \'Enter\' om inte det ska lånas) : ")
+            item_dict[name].lånat = dest
+            print(f"\n{item_dict[name]} är nu på väg till {dest}.")
+        else:
+            print(f"\nFöremålet har varit lånat till {item_dict[name].lånat}! Nu är det tillbaka i vår samling :)")
+            item_dict[name].lånat = ""
+    except KeyError:
+        print(f"Inget föremål med namn {name} hittades i samlingen.")
+
 """
 TODO: För över färdiga delar av koden i menyn, de som skapar, söker och tar bort föremål. 
 Det gör det 
