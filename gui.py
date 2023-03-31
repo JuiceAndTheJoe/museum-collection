@@ -81,7 +81,7 @@ class Application(Frame):
 
         self.bttn_view_t = Button(self,
                                  text="Visa hela samlingen",
-                                 command=self.bttn_hantera)
+                                 command=self.bttn_show)
         self.bttn_view_t.grid(row=6, column=0, sticky=W)
 
         # create text field
@@ -193,27 +193,45 @@ class Application(Frame):
         self.output_txt.delete(0.0, END)
         self.output_txt.insert(0.0, result)
 
-
     def bttn_hantera(self):
         if self.name_ent.get():
             if not museum.item_dict[self.name_ent.get()].lånat:
-                self.output_txt.delete(0.0, END)
-                self.output_txt.insert(0.0, f"\n{museum.item_dict[self.name_ent.get()]} är här i museet! Var ska den lånas? Skriv museumnamn i fältet för kontext. (Skriv \'Enter\' om inte det ska lånas)")
                 if self.kont_ent.get():
                     dest = self.kont_ent.get()
                     museum.item_dict[self.name_ent.get()].lånat = dest
                     result = f"\n{self.name_ent.get()} är nu på väg till {dest}."
+                    save_dict(museum.item_dict)
                 else:
                     result = "Föremålet är kvar i vår samling!"
             else:
                 museum.item_dict[self.name_ent.get()].lånat = ""
-                result = f"\nFöremålet har varit lånat till {museum.item_dict[self.name_ent.get()].lånat}! Nu är det tillbaka i vår samling :)"
+                result = f"\nFöremålet har varit lånat, men är nu tillbaka i vår samling :)"
+                save_dict(museum.item_dict)
         elif not self.name_ent.get():
-            result = "Ange ett föremålsnamn."
+            result = "Ange ett föremålsnamn. Skriv museumnamn i fältet för kontext. (Lämna fältet tomt om inte det ska lånas)"
         else:
             result = f"Inget föremål med namn {self.name_ent.get()} hittades i samlingen."
         self.output_txt.delete(0.0, END)
         self.output_txt.insert(0.0, result)
+
+    def bttn_show(self): #TODO: fixa! if & else ger samma resultat, och skriver ut allt upp och ner??
+        nr = 1
+        self.output_txt.delete(0.0, END)
+        if self.inkludera:
+            self.output_txt.insert(0.0, f"\nSamlingen innehåller följande {len(museum.item_dict)} element:\n")
+            for item in museum.item_dict.values():
+                item.antal += 1
+                self.output_txt.insert(0.0, f"{nr}. {str(item)}")
+                nr += 1
+
+        else:
+            self.output_txt.insert(0.0, "\nJust nu visas följande element:\n")
+            for item in museum.item_dict.values():
+                if item.lånat == "":
+                    item.antal += 1
+                    self.output_txt.insert(0.0, f"{nr}. {str(item)}")
+                    nr += 1
+
 
  # ---------- SETTING UP THE MAIN WINDOW ---------
 
