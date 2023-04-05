@@ -1,5 +1,6 @@
 from functions import *
 
+
 def execute(choice: int) -> None:
     """
     Used to execute the option that the user chose
@@ -9,9 +10,10 @@ def execute(choice: int) -> None:
         name = input("Namn: ")
         idnr = input("ID-nummer: ")
         beskr = input("Beskrivning: ")
-        kontext = input("Kontext - (använd komma imellan om flera kontext): ").split(", ")
+        kontext = input(
+            "Kontext - (använd komma imellan om flera kontext): ").split(", ")
 
-        item_dict[name] = Item(name,idnr,beskr,kontext)
+        item_dict[name] = Item(name, idnr, beskr, kontext)
         print(f"\n{name} har lagts till i samlingen!")
 
     elif choice == 2:
@@ -21,14 +23,14 @@ def execute(choice: int) -> None:
             print(f"{name} har blivit borttagen från samlingen!")
         except KeyError:
             print(f"Inget föremål med namn {name} hittades i samlingen.")
-    
+
     elif choice == 3:
         try:
             val = int(input("\nDu kan söka på: \n1- Namn \
                             \n2- Kontext \
                             \n3- Beskrivning \
                             \neller 4 - visa hela samlingen. \
-                            \n\nDitt val: "))    
+                            \n\nDitt val: "))
             if val == 1:
                 name = input("Name: ")
                 try:
@@ -36,7 +38,8 @@ def execute(choice: int) -> None:
                         itm.antal += 1
                         print(itm)
                 except KeyError:
-                    print(f"Inget föremål med namn {name} hittades i samlingen.")
+                    print(
+                        f"Inget föremål med namn {name} hittades i samlingen.")
             elif val == 2:
                 kon = input("Kontext: ")
                 try:
@@ -49,13 +52,15 @@ def execute(choice: int) -> None:
                 try:
                     fritext("d", bes, item_dict)
                 except KeyError:
-                    print(f"Inget föremål hittades under beskrivningen \"{bes}\".")
-                    print(item_dict) 
+                    print(
+                        f"Inget föremål hittades under beskrivningen \"{bes}\".")
+                    print(item_dict)
             elif val == 4:
                 nr = 1
                 c = input("Inkludera utlånade föremål? y/n ~ ")
                 if c == "y":
-                    print(f"\nSamlingen innehåller följande {len(item_dict)} element:\n")
+                    print(
+                        f"\nSamlingen innehåller följande {len(item_dict)} element:\n")
                     for item in item_dict.values():
                         item.antal += 1
                         print(f"{nr}. {str(item)}")
@@ -71,7 +76,7 @@ def execute(choice: int) -> None:
                     print("Svara med ja (y/Y) eller nej (n/N)!")
         except ValueError:
             print("Svara med ett heltal mellan 1 och 4!")
-    
+
     elif choice == 4:
         name = input("Vilket föremål vill du ändra beskrivningen på?: ")
         nb = input("Ny beskrivning: ")
@@ -94,6 +99,7 @@ def execute(choice: int) -> None:
     else:
         print("Svara med ett heltal i intervallet 1-5.")
 
+
 def main():
     while True:
         menu()
@@ -101,6 +107,7 @@ def main():
         execute(choice)
         if choice == 7:
             break
+
 
 item_dict = read_Item("dump")
 

@@ -3,6 +3,7 @@ from items import Item
 from functions import *
 from tkinter import *
 
+
 class Application(Frame):
     def __init__(self, master):
         Frame.__init__(self, master)
@@ -10,34 +11,34 @@ class Application(Frame):
         self.create_widgets()
 
     # ---------- THIS IS WHERE ALL THE GUI ITEMS ARE CREATED ---------
-    
+
     def create_widgets(self):
         # create label and entries for name, y & z
         Label(self,
               text="Namn:"
               ).grid(row=0, column=1, sticky=W)
-        
+
         self.name_ent = Entry(self)
         self.name_ent.grid(row=0, column=2, sticky=W)
 
         Label(self,
               text="ID-nummer:"
               ).grid(row=2, column=1, sticky=W)
-        
+
         self.nr_ent = Entry(self)
         self.nr_ent.grid(row=2, column=2, sticky=W)
 
         Label(self,
               text="Beskrivning:"
               ).grid(row=3, column=1, sticky=W)
-        
+
         self.beskr_ent = Entry(self)
         self.beskr_ent.grid(row=3, column=2, sticky=W)
 
         Label(self,
               text="Kontext:"
               ).grid(row=4, column=1, sticky=W)
-        
+
         self.kont_ent = Entry(self)
         self.kont_ent.grid(row=4, column=2, sticky=W)
 
@@ -55,8 +56,8 @@ class Application(Frame):
         self.bttn_add.grid(row=0, column=0, sticky=W)
 
         self.bttn_sim = Button(self,
-                            text="Ta bort föremål",
-                            command=self.bttn_delete)
+                               text="Ta bort föremål",
+                               command=self.bttn_delete)
         self.bttn_sim.grid(row=1, column=0, sticky=W)
 
         self.bttn_dep = Button(self,
@@ -65,23 +66,23 @@ class Application(Frame):
         self.bttn_dep.grid(row=2, column=0, sticky=W)
 
         self.bttn_chPIN = Button(self,
-                               text="Byt ett föremåls beskrivning",
-                               command=self.bttn_change_besk)
+                                 text="Byt ett föremåls beskrivning",
+                                 command=self.bttn_change_besk)
         self.bttn_chPIN.grid(row=3, column=0, sticky=W)
 
         self.bttn_view_t = Button(self,
-                                 text="Byt ett föremåls kontext",
-                                 command=self.bttn_change_kont)
+                                  text="Byt ett föremåls kontext",
+                                  command=self.bttn_change_kont)
         self.bttn_view_t.grid(row=4, column=0, sticky=W)
 
         self.bttn_view_t = Button(self,
-                                 text="Hantera lån",
-                                 command=self.bttn_hantera)
+                                  text="Hantera lån",
+                                  command=self.bttn_hantera)
         self.bttn_view_t.grid(row=5, column=0, sticky=W)
 
         self.bttn_view_t = Button(self,
-                                 text="Visa hela samlingen",
-                                 command=self.bttn_show)
+                                  text="Visa hela samlingen",
+                                  command=self.bttn_show)
         self.bttn_view_t.grid(row=6, column=0, sticky=W)
 
         # create text field
@@ -98,7 +99,8 @@ class Application(Frame):
             self.nr = int(self.nr_ent.get())
         except ValueError:
             self.output_txt.delete(0.0, END)
-            self.output_txt.insert(0.0, "ID-nummer måste vara ett tal och fältet får inte vara tomt!")
+            self.output_txt.insert(
+                0.0, "ID-nummer måste vara ett tal och fältet får inte vara tomt!")
             return False
         else:
             return True
@@ -116,7 +118,8 @@ class Application(Frame):
     def bttn_create_item(self):
         if self.get_name_id() == True:
             kont_list = self.kont_ent.get().split(", ")
-            museum.item_dict[self.name_ent.get()] = Item(self.name_ent.get(), self.nr_ent.get(), self.beskr_ent.get(), kont_list)
+            museum.item_dict[self.name_ent.get()] = Item(
+                self.name_ent.get(), self.nr_ent.get(), self.beskr_ent.get(), kont_list)
             result = f"Objekt skapad! {self.name_ent.get()} finns nu i samlingen."
             save_dict(museum.item_dict)
         else:
@@ -138,11 +141,11 @@ class Application(Frame):
         self.output_txt.insert(0.0, result)
 
     def bttn_search(self):
-        
+
         self.output_txt.delete(0.0, END)
-        
+
         if self.get_beskr_kont() == True:
-            
+
             if self.beskr_ent.get():
                 matches = fritext("d", self.beskr_ent.get(), museum.item_dict)
                 self.output_txt.insert(0.0, matches)
@@ -154,7 +157,7 @@ class Application(Frame):
                 result = m
                 if not matches:
                     result = f"Inga föremål hittades under beskrivning \"{self.beskr_ent.get()}\". Testa att omformulera dig!"
-            
+
             elif self.kont_ent.get():
                 matches = fritext("k", self.kont_ent.get(), museum.item_dict)
                 self.output_txt.insert(0.0, matches)
@@ -174,7 +177,8 @@ class Application(Frame):
     def bttn_change_besk(self):
         if self.name_ent.get() and self.get_beskr_kont():
             try:
-                result = museum.item_dict[self.name_ent.get()].byt_beskr(self.beskr_ent.get())
+                result = museum.item_dict[self.name_ent.get()].byt_beskr(
+                    self.beskr_ent.get())
             except KeyError:
                 result = f"Inget föremål med namn {self.name_ent.get()} hittades i samlingen."
         else:
@@ -185,7 +189,8 @@ class Application(Frame):
     def bttn_change_kont(self):
         if self.name_ent.get() and self.get_beskr_kont():
             try:
-                result = museum.item_dict[self.name_ent.get()].byt_kontext(self.kont_ent.get())
+                result = museum.item_dict[self.name_ent.get()].byt_kontext(
+                    self.kont_ent.get())
             except KeyError:
                 result = f"Inget föremål med namn {self.name_ent.get()} hittades i samlingen."
         else:
@@ -214,11 +219,12 @@ class Application(Frame):
         self.output_txt.delete(0.0, END)
         self.output_txt.insert(0.0, result)
 
-    def bttn_show(self): #TODO: fixa! if & else ger samma resultat, och skriver ut allt upp och ner??
+    def bttn_show(self):  # TODO: fixa! if & else ger samma resultat, och skriver ut allt upp och ner??
         nr = 1
         self.output_txt.delete(0.0, END)
         if self.inkludera:
-            self.output_txt.insert(0.0, f"\nSamlingen innehåller följande {len(museum.item_dict)} element:\n")
+            self.output_txt.insert(
+                0.0, f"\nSamlingen innehåller följande {len(museum.item_dict)} element:\n")
             for item in museum.item_dict.values():
                 item.antal += 1
                 self.output_txt.insert(0.0, f"{nr}. {str(item)}")
@@ -232,8 +238,8 @@ class Application(Frame):
                     self.output_txt.insert(0.0, f"{nr}. {str(item)}")
                     nr += 1
 
-
  # ---------- SETTING UP THE MAIN WINDOW ---------
+
 
 root = Tk()
 root.title("Museets hjälpreda!")
@@ -242,7 +248,7 @@ my_app = Application(root)
 root.mainloop()
 
 """
-TODO:   KOMMENTERA SKITEN UR DENNA FIL
+TODO:   
         Fixa "Hantera lån" & "Visa samlingen"
         Lägg till bildfält
 """

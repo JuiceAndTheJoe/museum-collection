@@ -20,7 +20,6 @@ class Item:
     """
 
     def __init__(self, namn: str, idnr: int, beskr: str, kontext: list) -> None:
-        
         """
         Skapar ett nytt föremål
 
@@ -45,7 +44,7 @@ class Item:
     def __str__(self) -> str:
         """
         Föremålets information att skriva ut
-        
+
         Returns
         str
             En fin sträng som redogör för föremålets egenskaper
@@ -53,14 +52,14 @@ class Item:
         kont = ""
         for k in self.kontext:
             kont += (k + ', ')
-        
+
         if not self.lånat:
             loan = ""
         else:
             loan = f"**För närvarande i {self.lånat}.**"
 
         return f"{self.namn}, \"{self.beskr}\", tillhör {kont}Id-nummer: {self.idnr} - [{self.antal} sökningar] {loan}\n"
-    
+
     def byt_beskr(self, new_beskr: str) -> str:
         """
         Byter föremålets beskriving.
@@ -69,7 +68,7 @@ class Item:
         ----------
         new_beskr
             Nya beskrivningen
-        
+
         Returns
         -------
         str
@@ -86,7 +85,7 @@ class Item:
         ----------
         new_kontext
             Nya sammanhanget
-        
+
         Returns
         -------
         str

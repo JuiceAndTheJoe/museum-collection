@@ -4,6 +4,7 @@ import pickle
 
 # I/O & menyfunktioner
 
+
 def read_Item(file_name: str) -> dict[str, Item]:
     """
         Läser in föremål från fil.
@@ -12,7 +13,7 @@ def read_Item(file_name: str) -> dict[str, Item]:
         ----------
         file_name
             Filnamn.
-        
+
         Returns
         -------
         dict
@@ -23,6 +24,7 @@ def read_Item(file_name: str) -> dict[str, Item]:
             return pickle.load(f)
     except IOError:
         return {}
+
 
 def write_Item(Item: dict[str, Item], file_name: str) -> None:
     """
@@ -43,6 +45,7 @@ def write_Item(Item: dict[str, Item], file_name: str) -> None:
         print(f"Error appeared: {e}.\nExiting w/o saving...", file=sys.stderr)
         sys.exit(1)
 
+
 def get_int_input(prompt_string: str) -> int:
     """
     Used to get an int from the user, asks again if input is
@@ -52,7 +55,7 @@ def get_int_input(prompt_string: str) -> int:
     ----------
     prompt_string
         The string explaining what to input
-    
+
     Returns
     -------
     int
@@ -63,7 +66,8 @@ def get_int_input(prompt_string: str) -> int:
             return int(input(prompt_string))
         except ValueError:
             print("Svara med ett heltal!\n")
-        
+
+
 def menu() -> None:
     """
     Used to display the menu:
@@ -83,8 +87,8 @@ def menu() -> None:
           \n6 - Hantera lån \
           \n7 - Spara och avsluta")
 
-def menu_choice() -> int:
 
+def menu_choice() -> int:
     """
     Used to get input on what the user wants to do
 
@@ -97,9 +101,10 @@ def menu_choice() -> int:
 
 # Objektfunktioner (hanterar sökning, ändring av egenskaper, etc)
 
+
 def fritext(type: str, s: str, d: dict) -> list:
     """
-    Used to search for partial descriptions/contexts of objects, 
+    Used to search for partial descriptions/contexts of objects,
     returns a list of objects that match the query.
 
     Parameters
@@ -107,31 +112,34 @@ def fritext(type: str, s: str, d: dict) -> list:
     type
         "k" or "d" - this principle can be applied to context or description search.
     s
-        The query string 
+        The query string
     d
         A dictionary to look through
     """
     if type == "d":   # sök beskrivning
         all_besk = {}
         for obj in d.values():
-            all_besk[obj] = [obj.namn, obj.beskr]   # all_besk innehåller objekt som key och namn och beskrivning av varje objekt som value
-    
+            # all_besk innehåller objekt som key och namn och beskrivning av varje objekt som value
+            all_besk[obj] = [obj.namn, obj.beskr]
+
         matches = []
         for a in all_besk.values():
             if s in a[1]:                           # om någon del av beskrivningen matchar query
                 matches.append(a[0])                # lägg till namnet i listan
-        
+
         return matches
-    
-    elif type == "k": # sök kontext
+
+    elif type == "k":  # sök kontext
         all_kont = {}
         for obj in d.values():
-            all_kont[obj] = [obj.namn, obj.kontext] # all_kont innehåller objekt som key och namn och kontext av varje objekt som value
+            # all_kont innehåller objekt som key och namn och kontext av varje objekt som value
+            all_kont[obj] = [obj.namn, obj.kontext]
             # {adaosijdak : ['test', ["uno", "dos", "tres"]]}
-    
+
         matches = []
-        for value in all_kont.values():             
-            for k in value[1]:                      # om någon av kontexten matchar query, lägg till objektnamnet i listan
+        for value in all_kont.values():
+            # om någon av kontexten matchar query, lägg till objektnamnet i listan
+            for k in value[1]:
                 if s in k:
                     matches.append(value[0])
 
@@ -140,25 +148,30 @@ def fritext(type: str, s: str, d: dict) -> list:
     else:
         pass                                        # error hanteras utanför funktionen
 
+
 def save_dict(dict: dict) -> None:
     if (itms := dict):
         write_Item(itms, "dump")
 
+
 def hantera(name: str, item_dict: dict):
     try:
         if not item_dict[name].lånat:
-            dest = input(f"\n{item_dict[name]} är här i museet! Var ska den lånas? (Tryck \'Enter\' om inte det ska lånas) : ")
+            dest = input(
+                f"\n{item_dict[name]} är här i museet! Var ska den lånas? (Tryck \'Enter\' om inte det ska lånas) : ")
             item_dict[name].lånat = dest
             print(f"\n{item_dict[name]} är nu på väg till {dest}.")
         else:
-            print(f"\nFöremålet har varit lånat till {item_dict[name].lånat}! Nu är det tillbaka i vår samling :)")
+            print(
+                f"\nFöremålet har varit lånat till {item_dict[name].lånat}! Nu är det tillbaka i vår samling :)")
             item_dict[name].lånat = ""
     except KeyError:
         print(f"Inget föremål med namn {name} hittades i samlingen.")
 
+
 """
-TODO: För över färdiga delar av koden i menyn, de som skapar, söker och tar bort föremål. 
-Det gör det 
-1. enklare att läsa 
+TODO: För över färdiga delar av koden i menyn, de som skapar, söker och tar bort föremål.
+Det gör det
+1. enklare att läsa
 2. enklare att anropa när GUI:n körs
 """
