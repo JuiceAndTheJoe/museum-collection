@@ -74,16 +74,16 @@ def menu() -> None:
     1 - Skapa nytt föremål
     2 - Ta bort föremål
     3 - Söka i samlingen
-    4 - Byt descivning på föremål
-    5 - Byt cont på föremål
+    4 - Byt beskrivning på föremål
+    5 - Byt kontext på föremål
     6 - Spara och avsluta
     """
     print("\nMuseets hjälpreda! Vad vill du göra? \
           \n1 - Skapa nytt föremål \
           \n2 - Ta bort föremål \
           \n3 - Söka i samlingen \
-          \n4 - Byt descivning på föremål \
-          \n5 - Byt cont på föremål \
+          \n4 - Byt beskrivning på föremål \
+          \n5 - Byt kontext på föremål \
           \n6 - Hantera lån \
           \n7 - Spara och avsluta")
 

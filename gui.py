@@ -85,6 +85,12 @@ class Application(Frame):
                                   command=self.bttn_show)
         self.bttn_view.grid(row=6, column=0, sticky=W)
 
+        # create clear button
+        self.clear_bttn = Button(self,
+                                 text="Rensa inputs",
+                                 command=self.clear)
+        self.clear_bttn.grid(row=6, column=2, sticky=W)
+
         # create text field
         self.output_txt = Text(self, width=100, height=25, wrap=WORD)
         self.output_txt.grid(row=7, column=0, columnspan=3)
@@ -179,6 +185,7 @@ class Application(Frame):
             try:
                 result = museum.item_dict[self.name_ent.get()].change_desc(
                     self.desc_ent.get())
+                save_dict(museum.item_dict)
             except KeyError:
                 result = f"Inget föremål med namn {self.name_ent.get()} hittades i samlingen."
         else:
@@ -191,6 +198,7 @@ class Application(Frame):
             try:
                 result = museum.item_dict[self.name_ent.get()].change_cont(
                     self.cont_ent.get())
+                save_dict(museum.item_dict)
             except KeyError:
                 result = f"Inget föremål med namn {self.name_ent.get()} hittades i samlingen."
         else:
@@ -219,24 +227,33 @@ class Application(Frame):
         self.output_txt.delete(0.0, END)
         self.output_txt.insert(0.0, result)
 
-    def bttn_show(self):  # TODO: fixa! if & else ger samma resultat, och skriver ut allt upp och ner??
-        nr = 1
+    def bttn_show(self):  # Tkinter operates in reverse for some reason? 
+        nr = len(museum.item_dict) + 1
         self.output_txt.delete(0.0, END)
-        if self.include:
-            self.output_txt.insert(
-                0.0, f"\nSamlingen innehåller följande {len(museum.item_dict)} element:\n")
-            for item in museum.item_dict.values():
-                item.antal += 1
-                self.output_txt.insert(0.0, f"{nr}. {str(item)}")
-                nr += 1
+        if self.include.get():
 
+            for item in reversed(museum.item_dict.values()):
+                item.searched += 1
+                nr -= 1
+                self.output_txt.insert(0.0, f"\n{nr}. {str(item)}")
+            self.output_txt.insert(
+            0.0, f"Samlingen innehåller följande {len(museum.item_dict)} element:\n")
+        
         else:
-            self.output_txt.insert(0.0, "\nJust nu visas följande element:\n")
+            n = 2
             for item in museum.item_dict.values():
                 if item.loaned == "":
-                    item.antal += 1
-                    self.output_txt.insert(0.0, f"{nr}. {str(item)}")
-                    nr += 1
+                    item.searched += 1
+                    self.output_txt.insert(0.0, f"\n{n}. {str(item)}")
+                    n -= 1
+            self.output_txt.insert(0.0, "Just nu visas följande element:\n")
+
+        save_dict(museum.item_dict)
+
+    def clear(self):
+        boxes = [self.name_ent, self.nr_ent, self.desc_ent, self.cont_ent]
+        for box in boxes:
+            box.delete(0, END)
 
  # ---------- SETTING UP THE MAIN WINDOW ---------
 
@@ -249,6 +266,5 @@ root.mainloop()
 
 """
 TODO:   
-        Fixa "Hantera lån" & "Visa samlingen"
         Lägg till bildfält
 """

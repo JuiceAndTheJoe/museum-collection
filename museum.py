@@ -11,7 +11,7 @@ def execute(choice: int) -> None:
         idnr = input("ID-nummer: ")
         desc = input("Beskrivning: ")
         context = input(
-            "kontext - (använd komma imellan om flera kontext): ").split(", ")
+            "Kontext - (använd komma imellan om flera kontext): ").split(", ")
 
         item_dict[name] = Item(name, idnr, desc, context)
         print(f"\n{name} har lagts till i samlingen!")
