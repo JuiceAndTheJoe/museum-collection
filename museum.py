@@ -9,11 +9,11 @@ def execute(choice: int) -> None:
     if choice == 1:
         name = input("Namn: ")
         idnr = input("ID-nummer: ")
-        beskr = input("Beskrivning: ")
-        kontext = input(
-            "Kontext - (använd komma imellan om flera kontext): ").split(", ")
+        desc = input("Beskrivning: ")
+        context = input(
+            "kontext - (använd komma imellan om flera kontext): ").split(", ")
 
-        item_dict[name] = Item(name, idnr, beskr, kontext)
+        item_dict[name] = Item(name, idnr, desc, context)
         print(f"\n{name} har lagts till i samlingen!")
 
     elif choice == 2:
@@ -32,10 +32,10 @@ def execute(choice: int) -> None:
                             \neller 4 - visa hela samlingen. \
                             \n\nDitt val: "))
             if val == 1:
-                name = input("Name: ")
+                name = input("Namn: ")
                 try:
                     if (itm := item_dict[name]):
-                        itm.antal += 1
+                        itm.searched += 1
                         print(itm)
                 except KeyError:
                     print(
@@ -62,18 +62,18 @@ def execute(choice: int) -> None:
                     print(
                         f"\nSamlingen innehåller följande {len(item_dict)} element:\n")
                     for item in item_dict.values():
-                        item.antal += 1
+                        item.searched += 1
                         print(f"{nr}. {str(item)}")
                         nr += 1
                 elif c == "n":
                     print("\nJust nu visas följande element:\n")
                     for item in item_dict.values():
-                        if item.lånat == "":
-                            item.antal += 1
+                        if item.loaned == "":
+                            item.searched += 1
                             print(f"{nr}. {str(item)}")
                             nr += 1
                 else:
-                    print("Svara med ja (y/Y) eller nej (n/N)!")
+                    print("Svara med ja (y) eller nej (n)!")
         except ValueError:
             print("Svara med ett heltal mellan 1 och 4!")
 
@@ -81,19 +81,19 @@ def execute(choice: int) -> None:
         name = input("Vilket föremål vill du ändra beskrivningen på?: ")
         nb = input("Ny beskrivning: ")
         try:
-            print(item_dict[name].byt_beskr(nb))
+            print(item_dict[name].change_desc(nb))
         except KeyError:
             print(f"Inget föremål med namn {name} hittades i samlingen.")
     elif choice == 5:
         name = input("Vilket föremål vill du ändra kontexten på?: ")
         nk = input("Ny kontext: ")
         try:
-            print(item_dict[name].byt_kontext(nk))
+            print(item_dict[name].change_cont(nk))
         except KeyError:
             print(f"Inget föremål med namn {name} hittades i samlingen.")
     elif choice == 6:
         name = input("Vilket föremål vill du hantera?: ")
-        hantera(name, item_dict)
+        manage(name, item_dict)
     elif choice == 7:
         save_dict(item_dict)
     else:

@@ -1,95 +1,95 @@
 class Item:
 
     """
-    Ett föremål i museet.
+    An item in the collection.
 
     Attributes
     ----------
-    namn : str
-        Föremålets namn.
+    name : str
+        The item's name.
     idnr: int
-        Föremålets identifikationsnummer.
-    beskr : str
-        Kort beskrivning av föremålet.
-    kontext : list
-        Föremålets historiska sammanhang.
-    antal : int
-        Antalet gånger föremålet har sökts.
-    lånat : str
-        Vilket museum föremålet är lånat till. Om tom sträng (False), är föremålet inte lånat.
+        The item's ID-number.
+    desc : str
+        Short description of the item.
+    cont : list
+        The item's historical contexts.
+    searched : int
+        The number of times the item has been searched.
+    loaned : str
+        What museum the item is currently loaned to. If empty (False), the item is not loaned.
     """
 
-    def __init__(self, namn: str, idnr: int, beskr: str, kontext: list) -> None:
+    def __init__(self, name: str, idnr: int, desc: str, cont: list) -> None:
         """
-        Skapar ett nytt föremål
+        Creates a new item
 
         Parameters
         ----------
-        namn
-            Föremålets namn.
+        name
+            The item's name.
         idnr
-            Föremålets identifikationsnummer.
-        beskr
-            Kort beskrivning av föremålet.
-        kontext
-            Föremålets historiska sammanhang.
+            The item's ID-number.
+        desc
+            Short description of the item.
+        cont
+            The item's historical contexts.
         """
-        self.namn = namn
+        self.name = name
         self.idnr = idnr
-        self.beskr = beskr
-        self.kontext = kontext
-        self.antal = 0
-        self.lånat = ""
+        self.desc = desc
+        self.cont = cont
+        self.searched = 0
+        self.loaned = ""
 
     def __str__(self) -> str:
         """
-        Föremålets information att skriva ut
+        Prints the item's attributes
 
         Returns
         str
-            En fin sträng som redogör för föremålets egenskaper
+            A nice string containing the item's attributes
         """
-        kont = ""
-        for k in self.kontext:
-            kont += (k + ', ')
+        cont = ""
+        for c in self.cont:
+            cont += (c + ', ')
 
-        if not self.lånat:
+        if not self.loaned:
             loan = ""
         else:
-            loan = f"**För närvarande i {self.lånat}.**"
+            loan = f"**För närvarande i {self.loaned}.**"
 
-        return f"{self.namn}, \"{self.beskr}\", tillhör {kont}Id-nummer: {self.idnr} - [{self.antal} sökningar] {loan}\n"
+        return f"{self.name}, \"{self.desc}\", tillhör {cont}Id-nummer: {self.idnr} - [{self.searched} sökningar] {loan}\n"
 
-    def byt_beskr(self, new_beskr: str) -> str:
+    def change_desc(self, new_desc: str) -> str:
         """
-        Byter föremålets beskriving.
+        Changes the item's description.
 
         Parameters
         ----------
-        new_beskr
-            Nya beskrivningen
+        new_desc
+            The new description
 
         Returns
         -------
         str
-            Bekräftelse på uppdateringen.
+            Confirmation saying the change has occured.
         """
-        self.beskr = new_beskr
-        return f"Uppdaterad beskrivning: {self.beskr}\n"
+        self.desc = new_desc
+        return f"Uppdaterad beskrivning: {self.desc}\n"
 
-    def byt_kontext(self, new_kontext: list) -> str:
+    def change_cont(self, new_cont: list) -> str:
         """
-        Byter föremålets historiska sammanhang.
+        Changes the item's historical context.
 
         Parameters
         ----------
-        new_kontext
-            Nya sammanhanget
+        new_cont
+            The new context
 
         Returns
         -------
         str
-            Bekräftelse på uppdateringen.
+            Confirmation saying the change has occured.
         """
-        self.kontext = new_kontext.split(", ")
-        return f"Uppdaterad historiskt sammanhang: {self.kontext}\n"
+        self.cont = new_cont.split(", ")
+        return f"Uppdaterad historiskt sammanhang: {self.cont}\n"

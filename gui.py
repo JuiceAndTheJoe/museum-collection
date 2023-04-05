@@ -32,21 +32,21 @@ class Application(Frame):
               text="Beskrivning:"
               ).grid(row=3, column=1, sticky=W)
 
-        self.beskr_ent = Entry(self)
-        self.beskr_ent.grid(row=3, column=2, sticky=W)
+        self.desc_ent = Entry(self)
+        self.desc_ent.grid(row=3, column=2, sticky=W)
 
         Label(self,
               text="Kontext:"
               ).grid(row=4, column=1, sticky=W)
 
-        self.kont_ent = Entry(self)
-        self.kont_ent.grid(row=4, column=2, sticky=W)
+        self.cont_ent = Entry(self)
+        self.cont_ent.grid(row=4, column=2, sticky=W)
 
         # create check button
-        self.inkludera = BooleanVar()
+        self.include = BooleanVar()
         Checkbutton(self,
                     text="Inkludera utlånade föremål",
-                    variable=self.inkludera
+                    variable=self.include
                     ).grid(row=5, column=1, sticky=W)
 
         # create buttons for adding items and running simulator
@@ -55,35 +55,35 @@ class Application(Frame):
                                command=self.bttn_create_item)
         self.bttn_add.grid(row=0, column=0, sticky=W)
 
-        self.bttn_sim = Button(self,
+        self.bttn_del = Button(self,
                                text="Ta bort föremål",
                                command=self.bttn_delete)
-        self.bttn_sim.grid(row=1, column=0, sticky=W)
+        self.bttn_del.grid(row=1, column=0, sticky=W)
 
-        self.bttn_dep = Button(self,
+        self.bttn_dc = Button(self,
                                text="Sök beskrivning/kontext",
                                command=self.bttn_search)
-        self.bttn_dep.grid(row=2, column=0, sticky=W)
+        self.bttn_dc.grid(row=2, column=0, sticky=W)
 
-        self.bttn_chPIN = Button(self,
+        self.bttn_chD = Button(self,
                                  text="Byt ett föremåls beskrivning",
-                                 command=self.bttn_change_besk)
-        self.bttn_chPIN.grid(row=3, column=0, sticky=W)
+                                 command=self.bttn_change_desc)
+        self.bttn_chD.grid(row=3, column=0, sticky=W)
 
-        self.bttn_view_t = Button(self,
+        self.bttn_chC = Button(self,
                                   text="Byt ett föremåls kontext",
-                                  command=self.bttn_change_kont)
-        self.bttn_view_t.grid(row=4, column=0, sticky=W)
+                                  command=self.bttn_change_cont)
+        self.bttn_chC.grid(row=4, column=0, sticky=W)
 
-        self.bttn_view_t = Button(self,
+        self.bttn_m = Button(self,
                                   text="Hantera lån",
-                                  command=self.bttn_hantera)
-        self.bttn_view_t.grid(row=5, column=0, sticky=W)
+                                  command=self.bttn_manage)
+        self.bttn_m.grid(row=5, column=0, sticky=W)
 
-        self.bttn_view_t = Button(self,
+        self.bttn_view = Button(self,
                                   text="Visa hela samlingen",
                                   command=self.bttn_show)
-        self.bttn_view_t.grid(row=6, column=0, sticky=W)
+        self.bttn_view.grid(row=6, column=0, sticky=W)
 
         # create text field
         self.output_txt = Text(self, width=100, height=25, wrap=WORD)
@@ -105,8 +105,8 @@ class Application(Frame):
         else:
             return True
 
-    def get_beskr_kont(self):
-        if not (self.beskr_ent.get() or self.kont_ent.get()):
+    def get_desc_cont(self):
+        if not (self.desc_ent.get() or self.cont_ent.get()):
             self.output_txt.delete(0.0, END)
             self.output_txt.insert(0.0, "Tom beskrivning!")
             return False
@@ -117,9 +117,9 @@ class Application(Frame):
 
     def bttn_create_item(self):
         if self.get_name_id() == True:
-            kont_list = self.kont_ent.get().split(", ")
+            cont_list = self.cont_ent.get().split(", ")
             museum.item_dict[self.name_ent.get()] = Item(
-                self.name_ent.get(), self.nr_ent.get(), self.beskr_ent.get(), kont_list)
+                self.name_ent.get(), self.nr_ent.get(), self.desc_ent.get(), cont_list)
             result = f"Objekt skapad! {self.name_ent.get()} finns nu i samlingen."
             save_dict(museum.item_dict)
         else:
@@ -144,10 +144,10 @@ class Application(Frame):
 
         self.output_txt.delete(0.0, END)
 
-        if self.get_beskr_kont() == True:
+        if self.get_desc_cont() == True:
 
-            if self.beskr_ent.get():
-                matches = fritext("d", self.beskr_ent.get(), museum.item_dict)
+            if self.desc_ent.get():
+                matches = fritext("d", self.desc_ent.get(), museum.item_dict)
                 self.output_txt.insert(0.0, matches)
                 m = []
                 for a in matches:
@@ -156,10 +156,10 @@ class Application(Frame):
                     m.append(museum.item_dict[a])
                 result = m
                 if not matches:
-                    result = f"Inga föremål hittades under beskrivning \"{self.beskr_ent.get()}\". Testa att omformulera dig!"
+                    result = f"Inga föremål hittades under beskrivning \"{self.desc_ent.get()}\". Testa att omformulera dig!"
 
-            elif self.kont_ent.get():
-                matches = fritext("k", self.kont_ent.get(), museum.item_dict)
+            elif self.cont_ent.get():
+                matches = fritext("k", self.cont_ent.get(), museum.item_dict)
                 self.output_txt.insert(0.0, matches)
                 m = []
                 for a in matches:
@@ -168,17 +168,17 @@ class Application(Frame):
                     m.append(museum.item_dict[a])
                 result = m
                 if not matches:
-                    result = f"Inga föremål hittades under kontext \"{self.kont_ent.get()}\". Testa att omformulera dig!"
+                    result = f"Inga föremål hittades under kontext \"{self.cont_ent.get()}\". Testa att omformulera dig!"
         else:
             result = "Skriv en beskrivning eller kontext!"
         self.output_txt.delete(0.0, END)
         self.output_txt.insert(0.0, result)
 
-    def bttn_change_besk(self):
-        if self.name_ent.get() and self.get_beskr_kont():
+    def bttn_change_desc(self):
+        if self.name_ent.get() and self.get_desc_cont():
             try:
-                result = museum.item_dict[self.name_ent.get()].byt_beskr(
-                    self.beskr_ent.get())
+                result = museum.item_dict[self.name_ent.get()].change_desc(
+                    self.desc_ent.get())
             except KeyError:
                 result = f"Inget föremål med namn {self.name_ent.get()} hittades i samlingen."
         else:
@@ -186,11 +186,11 @@ class Application(Frame):
         self.output_txt.delete(0.0, END)
         self.output_txt.insert(0.0, result)
 
-    def bttn_change_kont(self):
-        if self.name_ent.get() and self.get_beskr_kont():
+    def bttn_change_cont(self):
+        if self.name_ent.get() and self.get_desc_cont():
             try:
-                result = museum.item_dict[self.name_ent.get()].byt_kontext(
-                    self.kont_ent.get())
+                result = museum.item_dict[self.name_ent.get()].change_cont(
+                    self.cont_ent.get())
             except KeyError:
                 result = f"Inget föremål med namn {self.name_ent.get()} hittades i samlingen."
         else:
@@ -198,18 +198,18 @@ class Application(Frame):
         self.output_txt.delete(0.0, END)
         self.output_txt.insert(0.0, result)
 
-    def bttn_hantera(self):
+    def bttn_manage(self):
         if self.name_ent.get():
-            if not museum.item_dict[self.name_ent.get()].lånat:
-                if self.kont_ent.get():
-                    dest = self.kont_ent.get()
-                    museum.item_dict[self.name_ent.get()].lånat = dest
+            if not museum.item_dict[self.name_ent.get()].loaned:
+                if self.cont_ent.get():
+                    dest = self.cont_ent.get()
+                    museum.item_dict[self.name_ent.get()].loaned = dest
                     result = f"\n{self.name_ent.get()} är nu på väg till {dest}."
                     save_dict(museum.item_dict)
                 else:
                     result = "Föremålet är kvar i vår samling!"
             else:
-                museum.item_dict[self.name_ent.get()].lånat = ""
+                museum.item_dict[self.name_ent.get()].loaned = ""
                 result = f"\nFöremålet har varit lånat, men är nu tillbaka i vår samling :)"
                 save_dict(museum.item_dict)
         elif not self.name_ent.get():
@@ -222,7 +222,7 @@ class Application(Frame):
     def bttn_show(self):  # TODO: fixa! if & else ger samma resultat, och skriver ut allt upp och ner??
         nr = 1
         self.output_txt.delete(0.0, END)
-        if self.inkludera:
+        if self.include:
             self.output_txt.insert(
                 0.0, f"\nSamlingen innehåller följande {len(museum.item_dict)} element:\n")
             for item in museum.item_dict.values():
@@ -233,7 +233,7 @@ class Application(Frame):
         else:
             self.output_txt.insert(0.0, "\nJust nu visas följande element:\n")
             for item in museum.item_dict.values():
-                if item.lånat == "":
+                if item.loaned == "":
                     item.antal += 1
                     self.output_txt.insert(0.0, f"{nr}. {str(item)}")
                     nr += 1
